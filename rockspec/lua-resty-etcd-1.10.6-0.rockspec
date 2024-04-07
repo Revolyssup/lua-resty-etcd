@@ -1,8 +1,8 @@
-package = "lua-resty-etcd-master"
+package = "lua-resty-etcd"
 version = "1.10.6-0"
 source = {
    url = "git://github.com/api7/lua-resty-etcd",
-   branch = "v1.10.6",
+   tag = "v1.10.6",
 }
 
 description = {
