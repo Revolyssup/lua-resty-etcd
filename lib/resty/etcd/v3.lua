@@ -1690,6 +1690,30 @@ end
 end -- do
 
 
+function _M.get_latest_uncompacted_revision(self)
+    local encoded_key = encode_base64("/")
+    local opts = {
+        body = {
+            key = encoded_key,  -- Pass the base64 encoded key
+            count_only = true,
+            range_end = encode_base64("\0")
+        }
+    }
+
+    local res, err = _request_uri(self, "POST", "/kv/range", opts, self.timeout)
+    if not res then
+        return nil, "failed to get latest uncompacted revision: " .. err
+    end
+
+    if res.body and res.body.header and res.body.header.revision then
+        return tonumber(res.body.header.revision), nil
+    else
+        local inspect = require("inspect")
+        return nil, "failed to get latest uncompacted revision: " .. inspect(res)
+    end
+end
+
+
 local implemented_grpc_methods = {
     grant = true,
     revoke = true,
